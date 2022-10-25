@@ -8,8 +8,28 @@
     <ContentPage.BindingContext>
         <viewmodels:CoffeeEquipmentViewModel/>
     </ContentPage.BindingContext>
+
+    <ListView BackgroundColor="Transparent">
+        <ListView.ItemsSource>
+            <x:Array Type="{x:Type x:String}">
+                <x:String>Item One</x:String>
+                <x:String>Item Two</x:String>
+                <x:String>Item Three</x:String>
+            </x:Array>
+        </ListView.ItemsSource>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <TextCell Text="{Binding .}"
+                          Detail="{Binding .}"/>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        
+    </ListView>
     
-    <Grid RowDefinitions="*,Auto,Auto,*">
+    
+    
+    
+    <!--<Grid RowDefinitions="*,Auto,Auto,*">
         
         <Label 
             Grid.Row="1"
@@ -20,6 +40,6 @@
             Command="{Binding IncreaseCount}"
             Grid.Row="2" 
             Text="Click me!"/>
-    </Grid>
+    </Grid>-->
    
 </ContentPage>
