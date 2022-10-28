@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewmodels="clr-namespace:MyCoffeeApp.ViewModels"
+             xmlns:viewmodels="clr-namespace:MyCoffeeApp.ViewModels" xmlns:model="clr-namespace:MyCoffeeApp.Models"
              x:Class="MyCoffeeApp.Views.CoffeeEquipmentPage"
              BackgroundColor="White"
              x:DataType="viewmodels:CoffeeEquipmentViewModel">
@@ -9,21 +9,47 @@
         <viewmodels:CoffeeEquipmentViewModel/>
     </ContentPage.BindingContext>
 
-    <ListView BackgroundColor="Transparent">
-        <ListView.ItemsSource>
-            <x:Array Type="{x:Type x:String}">
-                <x:String>Item One</x:String>
-                <x:String>Item Two</x:String>
-                <x:String>Item Three</x:String>
-            </x:Array>
-        </ListView.ItemsSource>
+    <ListView 
+        
+              CachingStrategy="RecycleElement"
+              BackgroundColor="Transparent"
+              ItemsSource="{Binding CoffeeGroups}"
+              IsGroupingEnabled="True"
+              GroupDisplayBinding="{Binding Key}"
+              HasUnevenRows="True"
+              SeparatorVisibility="None"
+              IsPullToRefreshEnabled="True"
+              IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+              RefreshCommand="{Binding RefreshCommand}"
+              RefreshControlColor="Red">
+
         <ListView.ItemTemplate>
-            <DataTemplate>
-                <TextCell Text="{Binding .}"
-                          Detail="{Binding .}"/>
+            <DataTemplate x:DataType="model:Coffee">
+                <ViewCell>
+                    <ViewCell.ContextActions>
+                        <MenuItem Text="Favorite" Clicked="MenuItem_Clicked"/>
+                        <MenuItem Text="Delete" IsDestructive="True"/>
+                    </ViewCell.ContextActions>
+                    <Grid Padding="10">
+                        <Frame CornerRadius="20"
+                               HasShadow="True">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="{Binding Image}"
+                                       WidthRequest="66"/>
+                                <StackLayout>
+                                    <Label VerticalOptions="Center"
+                                       FontSize="Large"
+                                       Text="{Binding Name}"/>
+                                    <Label VerticalOptions="Center"
+                                       FontSize="Large"
+                                       Text="{Binding Roaster}"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </ViewCell>
             </DataTemplate>
         </ListView.ItemTemplate>
-        
     </ListView>
     
     

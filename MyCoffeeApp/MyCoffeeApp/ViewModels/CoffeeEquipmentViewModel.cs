@@ -24,7 +24,7 @@ namespace MyCoffeeApp.ViewModels
             Coffee = new ObservableRangeCollection<Coffee>();
             CoffeeGroups = new ObservableRangeCollection<Grouping<string, Coffee>>();
 
-            var image = "coffeebag.png";
+            var image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSne2jiZ-0VRe7yChdyoLjTKED4am2n5GZYYg&usqp=CAU";
             Coffee.Add(new Coffee { Roaster = "Yes Plz", Name = "Sip of Sunshine", Image = image });
             Coffee.Add(new Coffee { Roaster = "Yes Plz", Name = "Potent Potable", Image = image });
             Coffee.Add(new Coffee { Roaster = "Blue Bottle", Name = "Kenya Kiambu Handege", Image = image });
