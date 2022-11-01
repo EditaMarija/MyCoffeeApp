@@ -28,9 +28,12 @@ namespace MyCoffeeApp.Views
         {
             ((ListView)sender).SelectedItem = null;
         }
-        private void MenuItem_Clicked(object sender, EventArgs e)
+        private async void MenuItem_Clicked(object sender, EventArgs e)
         {
-
+            var coffee = ((MenuItem)sender).BindingContext as Coffee;
+            if (coffee == null)
+                return;
+            await DisplayAlert("Coffee Favorited", coffee.Name, "OK");
         }
 
     }
