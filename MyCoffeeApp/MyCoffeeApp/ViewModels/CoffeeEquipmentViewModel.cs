@@ -18,6 +18,7 @@ namespace MyCoffeeApp.ViewModels
 
         public AsyncCommand RefreshCommand { get; }
         public AsyncCommand<Coffee> FavoriteCommand { get; }
+        public AsyncCommand<object> SelectedCommand { get; }
 
         public CoffeeEquipmentViewModel()
         {
@@ -35,6 +36,7 @@ namespace MyCoffeeApp.ViewModels
 
             RefreshCommand = new AsyncCommand(Refresh);
             FavoriteCommand = new AsyncCommand<Coffee>(Favorite);
+            SelectedCommand = new AsyncCommand<object>(Selected);
 
         }
 
@@ -42,7 +44,7 @@ namespace MyCoffeeApp.ViewModels
         {
             if (coffee == null)
                 return;
-                await Application.Current.MainPage.DisplayAlert("Favorite", coffee.Name, "OK");
+            await Application.Current.MainPage.DisplayAlert("Favorite", coffee.Name, "OK");
             
         }
 
@@ -51,18 +53,19 @@ namespace MyCoffeeApp.ViewModels
         public Coffee SelectedCoffee
         {
             get => selectedCoffee;
-            set
-            {
-                if(value != null) {
-                    Application.Current.MainPage.DisplayAlert("Selected", value.Name, "OK");
-                    previouslySelected = value;
-                    value = null;
-                }
-                selectedCoffee = value;
-                OnPropertyChanged();
-            }
+            set => SetProperty(ref selectedCoffee, value);
+           
         }
 
+        async Task Selected(object args)
+        {
+            var coffee = args as Coffee;
+            if (coffee == null)
+                return;
+            SelectedCoffee = null;
+            await Application.Current.MainPage.DisplayAlert("Selected", coffee.Name, "OK");
+
+        }
 
         async Task Refresh()
         {
