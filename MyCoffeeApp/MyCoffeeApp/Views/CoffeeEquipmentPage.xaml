@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewmodels="clr-namespace:MyCoffeeApp.ViewModels" xmlns:model="clr-namespace:MyCoffeeApp.Models"
+             xmlns:viewmodels="clr-namespace:MyCoffeeApp.ViewModels" 
+             xmlns:model="clr-namespace:MyCoffeeApp.Models"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             x:Class="MyCoffeeApp.Views.CoffeeEquipmentPage"
-             BackgroundColor="White"           
+             x:Class="MyCoffeeApp.Views.CoffeeEquipmentPage"                     
              x:DataType="viewmodels:CoffeeEquipmentViewModel"
-             x:Name="CoffeePage">
+             x:Name="CoffeePage"
+             BackgroundColor="White" >
     <ContentPage.BindingContext>
         <viewmodels:CoffeeEquipmentViewModel/>
     </ContentPage.BindingContext>
@@ -16,6 +17,10 @@
             <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddCommand}"/>
+    </ContentPage.ToolbarItems>
 
     <ListView 
               SelectedItem="{Binding SelectedCoffee, Mode=TwoWay}"
@@ -29,7 +34,8 @@
               IsPullToRefreshEnabled="True"
               IsRefreshing="{Binding IsBusy, Mode=OneWay}"
               RefreshCommand="{Binding RefreshCommand}"
-              RefreshControlColor="Red">
+              RefreshControlColor="Red"
+              SelectionMode="None">
         <ListView.Behaviors>
             <xct:EventToCommandBehavior
                 EventName="ItemSelected"
@@ -45,7 +51,12 @@
                             Source={x:Reference CoffeePage},
                             Path=BindingContext.FavoriteCommand}"
                                   CommandParameter="{Binding .}"/>
-                        <MenuItem Text="Delete" IsDestructive="True"/>
+                        <MenuItem  Command="{Binding 
+                            Source={x:Reference MyCoffeePage},
+                            Path=BindingContext.RemoveCommand}"
+                                  CommandParameter="{Binding .}"
+                            Text="Delete" 
+                            IsDestructive="True"/>
                     </ViewCell.ContextActions>
                     <Grid Padding="10">
                         <Frame CornerRadius="20"
@@ -54,12 +65,18 @@
                                 <Image Source="{Binding Image}"
                                        WidthRequest="66"/>
                                 <StackLayout>
-                                    <Label VerticalOptions="Center"
+                                    <Label 
+                                       VerticalOptions="Center"
                                        FontSize="Large"
                                        Text="{Binding Name}"/>
-                                    <Label VerticalOptions="Center"
+                                    <Label
+                                       VerticalOptions="Center"
                                        FontSize="Large"
                                        Text="{Binding Roaster}"/>
+                                    <Label
+                                       VerticalOptions="Center"
+                                       FontSize="Small"
+                                       Text="{Binding Id}"/>
                                 </StackLayout>
                                 <Button Text="Favorite"
                                         Command="{Binding 

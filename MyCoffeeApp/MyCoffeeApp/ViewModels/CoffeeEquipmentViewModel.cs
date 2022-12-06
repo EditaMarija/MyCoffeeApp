@@ -1,13 +1,11 @@
 ﻿using MvvmHelpers;
 using MvvmHelpers.Commands;
 using MyCoffeeApp.Models;
-using System;
-using System.Collections.Generic;
+using MyCoffeeApp.Views;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
+using Command = MvvmHelpers.Commands.Command;
 
 namespace MyCoffeeApp.ViewModels
 {
@@ -17,8 +15,14 @@ namespace MyCoffeeApp.ViewModels
         public ObservableRangeCollection<Grouping<string, Coffee>> CoffeeGroups { get; }
 
         public AsyncCommand RefreshCommand { get; }
+
         public AsyncCommand<Coffee> FavoriteCommand { get; }
         public AsyncCommand<object> SelectedCommand { get; }
+
+        public Command LoadMoreCommand { get; }
+        public Command DelayLoadMoreCommand { get; }
+        public Command ClearCommand { get; }
+
 
         public CoffeeEquipmentViewModel()
         {
@@ -26,17 +30,15 @@ namespace MyCoffeeApp.ViewModels
             Coffee = new ObservableRangeCollection<Coffee>();
             CoffeeGroups = new ObservableRangeCollection<Grouping<string, Coffee>>();
 
-            var image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSne2jiZ-0VRe7yChdyoLjTKED4am2n5GZYYg&usqp=CAU";
-            Coffee.Add(new Coffee { Roaster = "Yes Plz", Name = "Sip of Sunshine", Image = image });
-            Coffee.Add(new Coffee { Roaster = "Yes Plz", Name = "Potent Potable", Image = image });
-            Coffee.Add(new Coffee { Roaster = "Blue Bottle", Name = "Kenya Kiambu Handege", Image = image });
-
-            CoffeeGroups.Add(new Grouping<string, Coffee>("Blue Bottle", Coffee.Where(c => c.Roaster == "Blue Bottle")));
-            CoffeeGroups.Add(new Grouping<string, Coffee>("Yes Plz", Coffee.Where(c => c.Roaster == "Yes Plz")));
+            LoadMore();
 
             RefreshCommand = new AsyncCommand(Refresh);
             FavoriteCommand = new AsyncCommand<Coffee>(Favorite);
             SelectedCommand = new AsyncCommand<object>(Selected);
+
+            LoadMoreCommand = new Command(LoadMore);
+            ClearCommand = new Command(Clear);
+            DelayLoadMoreCommand = new Command(DelayLoadMore);
 
         }
 
@@ -73,35 +75,47 @@ namespace MyCoffeeApp.ViewModels
 
             await Task.Delay(2000);
 
+
+            Coffee.Clear();
+            LoadMore();
+
             IsBusy = false;
         }
 
-        //public CoffeeEquipmentViewModel()
-        //{
-        //    IncreaseCount = new Command(OnIncrease);
-        //}
-        //public ICommand IncreaseCount { get; }
+        void LoadMore()
+        {
+            if (Coffee.Count >= 20)
+                return;
 
-        //int count = 0;
-        //string countDisplay = "Click me!";
+            var image = "coffeebag.png";
+            Coffee.Add(new Coffee { Roaster = "Yes Plz", Name = "Sip of Sunshine", Image = image });
+            Coffee.Add(new Coffee { Roaster = "Yes Plz", Name = "Potent Potable", Image = image });
+            Coffee.Add(new Coffee { Roaster = "Yes Plz", Name = "Potent Potable", Image = image });
+            Coffee.Add(new Coffee { Roaster = "Blue Bottle", Name = "Kenya Kiambu Handege", Image = image });
+            Coffee.Add(new Coffee { Roaster = "Blue Bottle", Name = "Kenya Kiambu Handege", Image = image });
 
-        //public string CountDisplay
-        //{
-        //    get => countDisplay;
-        //    set => SetProperty(ref countDisplay, value); 
-        //set
-        //{
-        //    if (value == countDisplay)
-        //        return;
-        //    countDisplay = value;
-        //    OnPropertyChanged();
-        //}
-        // }
+            CoffeeGroups.Clear();
 
-        //void OnIncrease()
-        //{
-        //    count++;
-        //    CountDisplay = $"You clicked {count} time(s)!";
-        //}
+            CoffeeGroups.Add(new Grouping<string, Coffee>("Blue Bottle", Coffee.Where(c => c.Roaster == "Blue Bottle")));
+            CoffeeGroups.Add(new Grouping<string, Coffee>("Yes Plz", Coffee.Where(c => c.Roaster == "Yes Plz")));
+        }
+
+
+        void DelayLoadMore()
+        {
+            if (Coffee.Count <= 10)
+                return;
+
+            LoadMore();
+        }
+
+
+        void Clear()
+        {
+            Coffee.Clear();
+            CoffeeGroups.Clear();
+        }
+
+        
     }
 }
