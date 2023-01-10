@@ -1,8 +1,7 @@
 ﻿using MvvmHelpers;
 using MvvmHelpers.Commands;
 using MyCoffeeApp.Services;
-using MyCoffeeApp.Models;
-using MyCoffeeApp.Views;
+using MyCoffeeApp.Shared.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -10,20 +9,18 @@ using Command = MvvmHelpers.Commands.Command;
 
 namespace MyCoffeeApp.ViewModels
 {
-    public class MyCoffeeViewModel : ViewModelBase
+    public class InternetCoffeeViewModel : ViewModelBase
     {
         public ObservableRangeCollection<Coffee> Coffee { get; set; }
         public AsyncCommand RefreshCommand { get; }
         public AsyncCommand AddCommand { get; }
         public AsyncCommand<Coffee> RemoveCommand { get; }
-        public AsyncCommand<Coffee> SelectedCommand { get; }
 
-        //ICoffeeService coffeeService;
 
-        public MyCoffeeViewModel()
+        public InternetCoffeeViewModel()
         {
 
-            Title = "My Coffee";
+            Title = "Internet Coffee";
 
             Coffee = new ObservableRangeCollection<Coffee>();
 
@@ -31,35 +28,19 @@ namespace MyCoffeeApp.ViewModels
             RefreshCommand = new AsyncCommand(Refresh);
             AddCommand = new AsyncCommand(Add);
             RemoveCommand = new AsyncCommand<Coffee>(Remove);
-            SelectedCommand = new AsyncCommand<Coffee>(Selected);
-
-            //coffeeService = DependencyService.Get<ICoffeeService>();
         }
 
         async Task Add()
         {
             var name = await App.Current.MainPage.DisplayPromptAsync("Name", "Name of coffee");
             var roaster = await App.Current.MainPage.DisplayPromptAsync("Roaster", "Roaster of coffee");
-            await CoffeeService.AddCoffee(name, roaster);
+            await InternetCoffeeService.AddCoffee(name, roaster);
             await Refresh();
-
-            //var route = $"{nameof(AddMyCoffeePage)}?Name=Motz";
-            //await Shell.Current.GoToAsync(route);
-
-        }
-
-        async Task Selected(Coffee coffee)
-        {
-            if (coffee == null)
-                return;
-
-            //var route = $"{nameof(MyCoffeeDetailsPage)}?CoffeeId={coffee.Id}";
-            //await Shell.Current.GoToAsync(route);
         }
 
         async Task Remove(Coffee coffee)
         {
-            await CoffeeService.RemoveCoffee(coffee.Id);
+            await InternetCoffeeService.RemoveCoffee(coffee.Id);
             await Refresh();
         }
 
@@ -67,19 +48,15 @@ namespace MyCoffeeApp.ViewModels
         {
             IsBusy = true;
 
-#if DEBUG
-            await Task.Delay(500);
-#endif
+            await Task.Delay(2000);
 
             Coffee.Clear();
 
-            var coffees = await CoffeeService.GetCoffee();
+            var coffees = await InternetCoffeeService.GetCoffee();
 
             Coffee.AddRange(coffees);
 
             IsBusy = false;
-
-            //DependencyService.Get<IToast>()?.MakeToast("Refreshed!");
         }
     }
 }
