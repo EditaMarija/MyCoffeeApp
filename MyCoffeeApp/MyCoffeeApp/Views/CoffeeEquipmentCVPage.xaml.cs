@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MyCoffeeApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddMyCoffeePage : ContentPage
+    public partial class CoffeeEquipmentCVPage : ContentPage
     {
-        public AddMyCoffeePage()
+        public CoffeeEquipmentCVPage()
         {
             InitializeComponent();
         }

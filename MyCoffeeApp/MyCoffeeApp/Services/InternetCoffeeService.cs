@@ -1,5 +1,4 @@
 ﻿using MonkeyCache.FileStore;
-using MyCoffeeApp.Models;
 using MyCoffeeApp.Shared.Models;
 using Newtonsoft.Json;
 using SQLite;

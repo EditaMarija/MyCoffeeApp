@@ -9,12 +9,14 @@ namespace MyCoffeeApp
         {
             InitializeComponent();
 
-            Routing.RegisterRoute(nameof(AddMyCoffeePage), 
+            Routing.RegisterRoute(nameof(AddMyCoffeePage),
                 typeof(AddMyCoffeePage));
 
-            Routing.RegisterRoute(nameof(MyCoffeeDetailsPage), 
+            Routing.RegisterRoute(nameof(MyCoffeeDetailsPage),
                 typeof(MyCoffeeDetailsPage));
-        }
 
+            Routing.RegisterRoute(nameof(RegistrationPage),
+                typeof(RegistrationPage));
+        }
     }
 }

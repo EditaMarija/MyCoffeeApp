@@ -1,7 +1,7 @@
 ﻿using MvvmHelpers;
 using MvvmHelpers.Commands;
 using MyCoffeeApp.Services;
-using MyCoffeeApp.Models;
+using MyCoffeeApp.Shared.Models;
 using MyCoffeeApp.Views;
 using System.Linq;
 using System.Threading.Tasks;

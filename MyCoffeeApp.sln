@@ -7,7 +7,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCoffeeApp.Android", "MyCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCoffeeApp.iOS", "MyCoffeeApp\MyCoffeeApp.iOS\MyCoffeeApp.iOS.csproj", "{F71D0FB3-38A1-4C39-8196-B7CEE36382A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCoffeeApp", "MyCoffeeApp\MyCoffeeApp\MyCoffeeApp.csproj", "{23C1B131-C8A9-48B7-AA36-912F4F91352B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyCoffeeApp", "MyCoffeeApp\MyCoffeeApp\MyCoffeeApp.csproj", "{23C1B131-C8A9-48B7-AA36-912F4F91352B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{69C9D724-7ECB-49F1-B760-FC7EF7A11BFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{03F35F64-A05E-4FD5-84CC-4597C3F0D9CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{D9093A5F-9904-4E63-AE2A-9CD69B63A100}"
+	ProjectSection(SolutionItems) = preProject
+		MyCoffeeApp\MyCoffeeApp\Models\Coffee.cs = MyCoffeeApp\MyCoffeeApp\Models\Coffee.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +85,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D9093A5F-9904-4E63-AE2A-9CD69B63A100} = {69C9D724-7ECB-49F1-B760-FC7EF7A11BFA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2C983AA8-665A-4C6D-A236-D92DF98EF558}
