@@ -57,6 +57,9 @@
     <PackageReference Include="MonkeyCache">
       <Version>1.6.3</Version>
     </PackageReference>
+    <PackageReference Include="MonkeyCache.FileStore">
+      <Version>1.6.3</Version>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.2</Version>
     </PackageReference>

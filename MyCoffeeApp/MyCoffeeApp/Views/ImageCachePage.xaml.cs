@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MyCoffeeApp.Cells
+namespace MyCoffeeApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CoffeeCard : Grid
+    public partial class ImageCachePage : ContentPage
     {
-        public CoffeeCard()
+        public ImageCachePage()
         {
             InitializeComponent();
         }

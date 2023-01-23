@@ -3,9 +3,9 @@
     x:Class="MyCoffeeApp.Views.MyCoffeeDetailsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:model="clr-namespace:MyCoffeeApp.Shared.Models;assembly=MyCoffeeApp.Shared"
+    xmlns:model="clr-namespace:MyCoffeeApp.Shared.Models;assembly=MyCoffeeApp.Shared" xmlns:model1="clr-namespace:MyCoffeeApp.Shared.Models"
     Title="{Binding Name}"
-    x:DataType="model:Coffee"
+    x:DataType="model1:Coffee"
     BackgroundColor="{AppThemeBinding 
                     Dark={StaticResource WindowBackgroundColorDark}, 
                     Light={StaticResource WindowBackgroundColor}}">

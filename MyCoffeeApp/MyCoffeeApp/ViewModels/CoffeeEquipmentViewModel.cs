@@ -50,7 +50,7 @@ namespace MyCoffeeApp.ViewModels
             
         }
 
-        Coffee previouslySelected;
+        //Coffee previouslySelected;
         Coffee selectedCoffee;
         public Coffee SelectedCoffee
         {

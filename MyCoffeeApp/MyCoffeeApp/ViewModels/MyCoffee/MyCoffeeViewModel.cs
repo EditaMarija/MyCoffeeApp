@@ -18,7 +18,7 @@ namespace MyCoffeeApp.ViewModels
         public AsyncCommand<Coffee> RemoveCommand { get; }
         public AsyncCommand<Coffee> SelectedCommand { get; }
 
-        //ICoffeeService coffeeService;
+        ICoffeeService coffeeService;
 
         public MyCoffeeViewModel()
         {
@@ -33,17 +33,15 @@ namespace MyCoffeeApp.ViewModels
             RemoveCommand = new AsyncCommand<Coffee>(Remove);
             SelectedCommand = new AsyncCommand<Coffee>(Selected);
 
-            //coffeeService = DependencyService.Get<ICoffeeService>();
+            coffeeService = DependencyService.Get<ICoffeeService>();
         }
 
         async Task Add()
         {
-            /*
-            var name = await App.Current.MainPage.DisplayPromptAsync("Name", "Name of coffee");
+            /*var name = await App.Current.MainPage.DisplayPromptAsync("Name", "Name of coffee");
             var roaster = await App.Current.MainPage.DisplayPromptAsync("Roaster", "Roaster of coffee");
             await CoffeeService.AddCoffee(name, roaster);
-            await Refresh();
-            */
+            await Refresh();*/
 
             var route = $"{nameof(AddMyCoffeePage)}?Name=Motz";
             await Shell.Current.GoToAsync(route);
@@ -55,13 +53,13 @@ namespace MyCoffeeApp.ViewModels
             if (coffee == null)
                 return;
 
-            //var route = $"{nameof(MyCoffeeDetailsPage)}?CoffeeId={coffee.Id}";
-            //await Shell.Current.GoToAsync(route);
+            var route = $"{nameof(MyCoffeeDetailsPage)}?CoffeeId={coffee.Id}";
+            await Shell.Current.GoToAsync(route);
         }
 
         async Task Remove(Coffee coffee)
         {
-            await CoffeeService.RemoveCoffee(coffee.Id);
+            await coffeeService.RemoveCoffee(coffee.Id);
             await Refresh();
         }
 
@@ -75,13 +73,13 @@ namespace MyCoffeeApp.ViewModels
 
             Coffee.Clear();
 
-            var coffees = await CoffeeService.GetCoffee();
+            var coffees = await coffeeService.GetCoffee();
 
             Coffee.AddRange(coffees);
 
             IsBusy = false;
 
-            //DependencyService.Get<IToast>()?.MakeToast("Refreshed!");
+            DependencyService.Get<IToast>()?.MakeToast("Refreshed!");
         }
     }
 }

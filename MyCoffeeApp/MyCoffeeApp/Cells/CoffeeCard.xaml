@@ -3,8 +3,8 @@
     x:Class="MyCoffeeApp.Cells.CoffeeCard"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:models="clr-namespace:MyCoffeeApp.Shared.Models;assembly=MyCoffeeApp.Shared"
-    x:DataType="models:Coffee"
+    xmlns:models="clr-namespace:MyCoffeeApp.Shared.Models;assembly=MyCoffeeApp.Shared" xmlns:model="clr-namespace:MyCoffeeApp.Shared.Models"
+    x:DataType="model:Coffee"
     Padding="10">
     <Frame Style="{StaticResource CoffeeCard}">
         <StackLayout Orientation="Horizontal">

@@ -1,110 +1,102 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:viewmodels="clr-namespace:MyCoffeeApp.ViewModels" 
-             xmlns:model="clr-namespace:MyCoffeeApp.Models"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             x:Class="MyCoffeeApp.Views.CoffeeEquipmentPage"                     
-             x:DataType="viewmodels:CoffeeEquipmentViewModel"
-             x:Name="CoffeePage"
-             BackgroundColor="White" >
+<ContentPage
+    x:Class="MyCoffeeApp.Views.CoffeeEquipmentPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fontAwesome="clr-namespace:FontAwesome"
+    xmlns:models="clr-namespace:MyCoffeeApp.Shared.Models;assembly=MyCoffeeApp.Shared"
+    xmlns:mvvm="clr-namespace:MvvmHelpers;assembly=MvvmHelpers"
+    xmlns:viewmodels="clr-namespace:MyCoffeeApp.ViewModels"
+    xmlns:xct="http://xamarin.com/schemas/2020/toolkit" 
+    xmlns:cells="clr-namespace:MyCoffeeApp.Cells"
+    x:Name="CoffeePage"
+    x:DataType="viewmodels:CoffeeEquipmentViewModel"
+    BackgroundColor="{AppThemeBinding 
+                        Dark={StaticResource WindowBackgroundColorDark}, 
+                        Light={StaticResource WindowBackgroundColor}}">
     <ContentPage.BindingContext>
-        <viewmodels:CoffeeEquipmentViewModel/>
+        <viewmodels:CoffeeEquipmentViewModel />
     </ContentPage.BindingContext>
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter"/>
+            <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter" />
+
+            <DataTemplate x:Key="Normal">
+                <ViewCell>
+                    <ViewCell.ContextActions>
+                        <MenuItem
+                            Command="{Binding Source={x:Reference CoffeePage}, Path=BindingContext.FavoriteCommand}"
+                            CommandParameter="{Binding .}"
+                            Text="Favorite" />
+                        <MenuItem IsDestructive="True" Text="Delete" />
+                    </ViewCell.ContextActions>
+                    <cells:CoffeeCard/>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="Special">
+                <ViewCell>
+                    <cells:SpecialCell/>
+                </ViewCell>
+            </DataTemplate>
+
+            <cells:CoffeeDataTemplateSelector x:Key="CoffeeSelector"
+                    Normal="{StaticResource Normal}"
+                    Special="{StaticResource Special}"/>
+
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{Binding AddCommand}"/>
+        <ToolbarItem Clicked="ToolbarItem_Clicked" Text="Logout" />
     </ContentPage.ToolbarItems>
 
-    <ListView 
-              SelectedItem="{Binding SelectedCoffee, Mode=TwoWay}"
-              CachingStrategy="RecycleElement"
-              BackgroundColor="Transparent"
-              ItemsSource="{Binding CoffeeGroups}"
-              IsGroupingEnabled="True"
-              GroupDisplayBinding="{Binding Key}"
-              HasUnevenRows="True"
-              SeparatorVisibility="None"
-              IsPullToRefreshEnabled="True"
-              IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-              RefreshCommand="{Binding RefreshCommand}"
-              RefreshControlColor="Red"
-              SelectionMode="None">
+    <ListView
+        CachingStrategy="RecycleElement"
+        GroupDisplayBinding="{Binding Key}"
+        IsGroupingEnabled="True"
+        IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+        ItemsSource="{Binding CoffeeGroups}"
+        RefreshCommand="{Binding RefreshCommand}"
+        SelectedItem="{Binding SelectedCoffee, Mode=TwoWay}"
+        Style="{StaticResource CoffeeListView}"
+        ItemTemplate="{StaticResource CoffeeSelector}">
         <ListView.Behaviors>
             <xct:EventToCommandBehavior
-                EventName="ItemSelected"
                 Command="{Binding SelectedCommand}"
-                EventArgsConverter="{StaticResource ItemSelectedEventArgsConverter}"/>
+                EventArgsConverter="{StaticResource ItemSelectedEventArgsConverter}"
+                EventName="ItemSelected" />
         </ListView.Behaviors>
-        <ListView.ItemTemplate>
-            <DataTemplate x:DataType="model:Coffee">
+        <ListView.GroupHeaderTemplate>
+            <DataTemplate x:DataType="{x:Null}">
                 <ViewCell>
-                    <ViewCell.ContextActions>
-                        <MenuItem Text="Favorite" 
-                                  Command="{Binding 
-                            Source={x:Reference CoffeePage},
-                            Path=BindingContext.FavoriteCommand}"
-                                  CommandParameter="{Binding .}"/>
-                        <MenuItem  Command="{Binding 
-                            Source={x:Reference MyCoffeePage},
-                            Path=BindingContext.RemoveCommand}"
-                                  CommandParameter="{Binding .}"
-                            Text="Delete" 
-                            IsDestructive="True"/>
-                    </ViewCell.ContextActions>
-                    <Grid Padding="10">
-                        <Frame CornerRadius="20"
-                               HasShadow="True">
-                            <StackLayout Orientation="Horizontal">
-                                <Image Source="{Binding Image}"
-                                       WidthRequest="66"/>
-                                <StackLayout>
-                                    <Label 
-                                       VerticalOptions="Center"
-                                       FontSize="Large"
-                                       Text="{Binding Name}"/>
-                                    <Label
-                                       VerticalOptions="Center"
-                                       FontSize="Large"
-                                       Text="{Binding Roaster}"/>
-                                    <Label
-                                       VerticalOptions="Center"
-                                       FontSize="Small"
-                                       Text="{Binding Id}"/>
-                                </StackLayout>
-                                <Button Text="Favorite"
-                                        Command="{Binding 
-                                    Source={RelativeSource 
-                                    AncestorType={x:Type viewmodels:CoffeeEquipmentViewModel}},
-                                    Path=FavoriteCommand}"
-                                        CommandParameter="{Binding .}"/>
-                            </StackLayout>
-                        </Frame>
-                    </Grid>
+                    <StackLayout Padding="20,0">
+                        <Label Style="{StaticResource LabelMedium}" Text="{Binding Key}" />
+                    </StackLayout>
                 </ViewCell>
             </DataTemplate>
-        </ListView.ItemTemplate>
+        </ListView.GroupHeaderTemplate>
+        <ListView.Header>
+            <StackLayout Orientation="Horizontal">
+                <Label
+                    Margin="20"
+                    FontFamily="AC"
+                    HorizontalOptions="Center"
+                    Style="{StaticResource LabelLarge}"
+                    Text="Coffees of the World">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+        </ListView.Header>
+        <ListView.Footer>
+            <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                <Button
+                    Command="{Binding LoadMoreCommand}"
+                    Style="{StaticResource ButtonOutline}"
+                    Text="Load More" />
+            </StackLayout>
+        </ListView.Footer>
     </ListView>
-    
-    
-    
-    <!--<Grid RowDefinitions="*,Auto,Auto,*">
-        
-        <Label 
-            Grid.Row="1"
-            HorizontalOptions="Center"
-            FontSize="Large"
-            Text="{Binding CountDisplay}"/>
-        <Button 
-            Command="{Binding IncreaseCount}"
-            Grid.Row="2" 
-            Text="Click me!"/>
-    </Grid>-->
-   
 </ContentPage>
